@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <includeContextName>false</includeContextName>
+            <includeThreadName>false</includeThreadName>
+            <appendLineSeparator>true</appendLineSeparator>
+            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</timestampFormat>
+            <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="json" />
+    </root>
+
+    <logger name="com.chassot" level="DEBUG" additivity="false" >
+        <appender-ref ref="json"/>
+    </logger>
+</configuration>

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-deployment
+  labels:
+    {{- include "chart.labels" . | indent 4 }}
+    {{- include "common.labels" . | indent 4 }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      {{- include "common.labels" . | indent 6 }}
+  template:
+    metadata:
+      namespace: {{ .Release.Namespace }}
+      labels:
+        {{- include "common.labels" . | indent 8 }}
+    spec:
+      containers:
+      - image: {{ .Values.application.image }}
+        name: {{ .Release.Name }}-container
+        ports:
+        - containerPort: {{ .Values.application.pod.container.port }}
+          protocol: {{ .Values.application.pod.container.protocol }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}
+        - secretRef:
+            name: {{ .Release.Name }}
+        volumeMounts:
+        - mountPath: /opt/{{ .Release.Name }}/configmap
+          name: {{ .Release.Name }}-configmap-volume
+        - mountPath: /opt/{{ .Release.Name }}/secret
+          name: {{ .Release.Name }}-secret-volume
+      volumes:
+      - name: {{ .Release.Name }}-configmap-volume
+        configMap:
+          name: {{ .Release.Name }}
+      - name: {{ .Release.Name }}-secret-volume
+        secret:
+          secretName: {{ .Release.Name }}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "chart.labels" . | indent 4 }}
+    {{- include "common.labels" . | indent 4 }}
+data:
+  logging.level.com.chassot: {{ .Values.logging.level.com.chassot }}
+  logging.file.path: /opt/{{ .Release.Name }}/logs
+  custom.valueTest: {{ .Values.custom.valueTest }}
+  custom.valueDebug: {{ .Values.custom.valueDebug }}
+  server.forward-headers-strategy: {{ .Values.server.forwardHeadersStrategy }}

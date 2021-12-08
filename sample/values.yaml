@@ -1,0 +1,25 @@
+application:
+  type: application
+  environment: dev
+  tier: backend
+  ingress:
+    controller: nginx
+  service:
+    port: 80
+  pod:
+    replicas: 1
+    container:
+      port: 8080
+      protocol: TCP
+
+server:
+  forwardHeadersStrategy: framework
+logging:
+  level:
+    com:
+      chassot: DEBUG
+custom:
+  valueTest: hello
+  valueDebug: world
+  database:
+    password: dGVzdHBhc3N3b3Jk

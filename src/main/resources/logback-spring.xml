@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <springProperty name="LOG_PATH" source="logging.file.path" defaultValue="logs"/>
+    <appender name="log-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/main.log</file>
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <includeContextName>false</includeContextName>
+            <includeThreadName>false</includeThreadName>
+            <appendLineSeparator>true</appendLineSeparator>
+            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</timestampFormat>
+            <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
+        </layout>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archived/main.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>1GB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <includeContextName>false</includeContextName>
+            <includeThreadName>false</includeThreadName>
+            <appendLineSeparator>true</appendLineSeparator>
+            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</timestampFormat>
+            <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="log-file" />
+        <appender-ref ref="json" />
+    </root>
+
+    <logger name="com.chassot" level="DEBUG" additivity="false" >
+        <appender-ref ref="json"/>
+        <appender-ref ref="log-file" />
+    </logger>
+</configuration>

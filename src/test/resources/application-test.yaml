@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      onProfile: test
+
+logging:
+  level:
+    com:
+      chassot: DEBUG
+
+springdoc:
+  api-docs:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics
+  metrics:
+    export:
+      dynatrace:
+        enabled: false
